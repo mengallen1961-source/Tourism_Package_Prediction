@@ -1,6 +1,6 @@
 {
-  "strategy": "pre_contact",
-  "feature_set": "C_pre_contact_no_redundant",
+  "strategy": "post_contact_follow_up",
+  "feature_set": "A_all_features",
   "feature_sets": {
     "C_pre_contact_no_redundant": [
       "Age",
