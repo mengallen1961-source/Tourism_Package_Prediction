@@ -1,0 +1,155 @@
+# ==============================================================
+# Cell 9.2 | Write the GitHub Actions workflow
+# --------------------------------------------------------------
+# Purpose : Define the end-to-end MLOps pipeline: register -> prepare ->
+#           drift check -> (conditional) train, gate and commit the model.
+# Input   : None (GitHub reads this file from the repository root)
+# Output  : .github/workflows/pipeline.yml
+# ==============================================================
+name: Tourism Project Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tourism_project/**"
+      - ".github/workflows/pipeline.yml"
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: "Retrain even if the drift check finds no reason"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tourism-pipeline
+  cancel-in-progress: true
+
+jobs:
+  register-dataset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: tourism_project/requirements.txt
+      - name: Install dependencies
+        run: pip install -r tourism_project/requirements.txt
+      - name: Register and validate the dataset
+        run: python tourism_project/model_building/data_register.py
+      - name: Upload the registration report
+        uses: actions/upload-artifact@v4
+        with:
+          name: registration-report
+          path: artifacts/registration_report.json
+
+  data-prep:
+    needs: register-dataset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: tourism_project/requirements.txt
+      - name: Install dependencies
+        run: pip install -r tourism_project/requirements.txt
+      - name: Clean and split the data
+        run: python tourism_project/model_building/prep.py
+      - name: Upload the train and test splits
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-splits
+          path: artifacts/data/
+      - name: Upload the preparation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: prep-report
+          path: artifacts/prep_report.json
+
+  drift-check:
+    needs: data-prep
+    runs-on: ubuntu-latest
+    outputs:
+      retrain: ${{ steps.drift.outputs.retrain }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: tourism_project/requirements.txt
+      - name: Install dependencies
+        run: pip install -r tourism_project/requirements.txt
+      - name: Download the train and test splits
+        uses: actions/download-artifact@v4
+        with:
+          name: data-splits
+          path: artifacts/data
+      - name: Decide whether to retrain
+        id: drift
+        run: python tourism_project/model_building/drift_check.py ${{ github.event.inputs.force_retrain == 'true' && '--force' || '' }}
+      - name: Upload the drift report
+        uses: actions/upload-artifact@v4
+        with:
+          name: drift-report
+          path: artifacts/drift_report.json
+
+  model-training:
+    needs: drift-check
+    if: needs.drift-check.outputs.retrain == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: tourism_project/requirements.txt
+      - name: Install dependencies
+        run: pip install -r tourism_project/requirements.txt
+      - name: Download the train and test splits
+        uses: actions/download-artifact@v4
+        with:
+          name: data-splits
+          path: artifacts/data
+      - name: Start MLflow server
+        run: |
+          nohup mlflow ui --host 127.0.0.1 --port 5000 --backend-store-uri "file://$PWD/mlruns" > mlflow.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:5000/health && break; sleep 2; done
+      - name: Train, evaluate and gate the model
+        run: python tourism_project/model_building/train.py
+      - name: Upload MLflow runs and the training report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlflow-runs
+          path: |
+            mlruns/
+            artifacts/train_report.json
+      - name: Commit and push the model
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tourism_project/deployment/
+          if git diff --cached --quiet; then echo "No model changes to commit"; exit 0; fi
+          DECISION=$(python -c "import json; print(json.load(open('tourism_project/deployment/metrics.json'))['last_decision'][:100])")
+          git commit -m "Model pipeline: ${DECISION} [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main

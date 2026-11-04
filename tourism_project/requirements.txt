@@ -1,0 +1,14 @@
+# ==============================================================
+# Cell 9.1 | Write the pipeline's dependency file
+# --------------------------------------------------------------
+# Purpose : Pin the libraries every GitHub Actions job installs. Same
+#           versions as the app (Section 8), plus MLflow for tracking.
+# Input   : None
+# Output  : tourism_project/requirements.txt
+# ==============================================================
+pandas==2.2.2
+numpy==2.2.6
+scikit-learn==1.6.0
+xgboost==2.1.4
+joblib==1.5.1
+mlflow==3.0.1

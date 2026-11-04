@@ -1,0 +1,73 @@
+{
+  "strategy": "pre_contact",
+  "feature_set": "C_pre_contact_no_redundant",
+  "feature_sets": {
+    "C_pre_contact_no_redundant": [
+      "Age",
+      "TypeofContact",
+      "CityTier",
+      "Occupation",
+      "Gender",
+      "NumberOfPersonVisiting",
+      "PreferredPropertyStar",
+      "MaritalStatus",
+      "NumberOfTrips",
+      "Passport",
+      "OwnCar",
+      "NumberOfChildrenVisiting",
+      "Designation",
+      "MonthlyIncome"
+    ],
+    "A_all_features": [
+      "Age",
+      "TypeofContact",
+      "CityTier",
+      "DurationOfPitch",
+      "Occupation",
+      "Gender",
+      "NumberOfPersonVisiting",
+      "NumberOfFollowups",
+      "ProductPitched",
+      "PreferredPropertyStar",
+      "MaritalStatus",
+      "NumberOfTrips",
+      "Passport",
+      "PitchSatisfactionScore",
+      "OwnCar",
+      "NumberOfChildrenVisiting",
+      "Designation",
+      "MonthlyIncome"
+    ]
+  },
+  "strategy_by_feature_set": {
+    "C_pre_contact_no_redundant": "pre_contact",
+    "A_all_features": "post_contact_follow_up"
+  },
+  "algorithm": "RandomForest",
+  "search_space": {
+    "max_depth": [
+      null,
+      10,
+      20
+    ],
+    "min_samples_leaf": [
+      1,
+      3,
+      5
+    ],
+    "max_features": [
+      "sqrt",
+      0.5
+    ]
+  },
+  "cv_folds": 5,
+  "tuning_metric": "average_precision",
+  "threshold_rule": "maximise out-of-fold F1",
+  "random_state": 42,
+  "gate": {
+    "compare_metric": "pr_auc",
+    "tolerance": 0.01,
+    "min_pr_auc": 0.45,
+    "min_f1": 0.45
+  }
+}
