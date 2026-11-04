@@ -1,0 +1,242 @@
+{
+  "n_rows": 1473,
+  "target_rate": 0.1955193482688391,
+  "features": {
+    "Age": {
+      "kind": "bins",
+      "inner_edges": [
+        27.0,
+        29.0,
+        32.0,
+        34.0,
+        36.0,
+        38.0,
+        41.0,
+        46.0,
+        51.0
+      ],
+      "shares": [
+        0.097081,
+        0.063815,
+        0.128988,
+        0.082145,
+        0.095723,
+        0.092329,
+        0.112695,
+        0.126273,
+        0.088255,
+        0.112695
+      ]
+    },
+    "TypeofContact": {
+      "kind": "levels",
+      "shares": {
+        "Company Invited": 0.287848,
+        "Self Enquiry": 0.712152
+      }
+    },
+    "CityTier": {
+      "kind": "levels",
+      "shares": {
+        "1": 0.648337,
+        "2": 0.044128,
+        "3": 0.307536
+      }
+    },
+    "DurationOfPitch": {
+      "kind": "bins",
+      "inner_edges": [
+        7.0,
+        9.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        24.0,
+        30.0
+      ],
+      "shares": [
+        0.05499,
+        0.141208,
+        0.09776,
+        0.086897,
+        0.095044,
+        0.110659,
+        0.105227,
+        0.099796,
+        0.096402,
+        0.112016
+      ]
+    },
+    "Occupation": {
+      "kind": "levels",
+      "shares": {
+        "Free Lancer": 0.000679,
+        "Large Business": 0.090971,
+        "Salaried": 0.488798,
+        "Small Business": 0.419552
+      }
+    },
+    "Gender": {
+      "kind": "levels",
+      "shares": {
+        "Female": 0.398506,
+        "Male": 0.601494
+      }
+    },
+    "NumberOfPersonVisiting": {
+      "kind": "levels",
+      "shares": {
+        "1": 0.004073,
+        "2": 0.243041,
+        "3": 0.522743,
+        "4": 0.230143
+      }
+    },
+    "NumberOfFollowups": {
+      "kind": "levels",
+      "shares": {
+        "1.0": 0.026477,
+        "2.0": 0.05499,
+        "3.0": 0.282417,
+        "4.0": 0.443313,
+        "5.0": 0.162254,
+        "6.0": 0.03055
+      }
+    },
+    "ProductPitched": {
+      "kind": "levels",
+      "shares": {
+        "Basic": 0.393754,
+        "Deluxe": 0.346911,
+        "King": 0.02444,
+        "Standard": 0.173116,
+        "Super Deluxe": 0.061779
+      }
+    },
+    "PreferredPropertyStar": {
+      "kind": "levels",
+      "shares": {
+        "3.0": 0.61575,
+        "4.0": 0.182621,
+        "5.0": 0.201629
+      }
+    },
+    "MaritalStatus": {
+      "kind": "levels",
+      "shares": {
+        "Divorced": 0.300068,
+        "Married": 0.372709,
+        "Single": 0.158181,
+        "Unmarried": 0.169043
+      }
+    },
+    "NumberOfTrips": {
+      "kind": "bins",
+      "inner_edges": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0
+      ],
+      "shares": [
+        0.107943,
+        0.307536,
+        0.251867,
+        0.106585,
+        0.096402,
+        0.129667
+      ]
+    },
+    "Passport": {
+      "kind": "levels",
+      "shares": {
+        "0": 0.7074,
+        "1": 0.2926
+      }
+    },
+    "PitchSatisfactionScore": {
+      "kind": "levels",
+      "shares": {
+        "1": 0.124915,
+        "2": 0.186694,
+        "3": 0.312288,
+        "4": 0.170401,
+        "5": 0.205703
+      }
+    },
+    "OwnCar": {
+      "kind": "levels",
+      "shares": {
+        "0": 0.403259,
+        "1": 0.596741
+      }
+    },
+    "NumberOfChildrenVisiting": {
+      "kind": "levels",
+      "shares": {
+        "0.0": 0.207739,
+        "1.0": 0.430414,
+        "2.0": 0.293958,
+        "3.0": 0.067889
+      }
+    },
+    "Designation": {
+      "kind": "levels",
+      "shares": {
+        "AVP": 0.061779,
+        "Executive": 0.393754,
+        "Manager": 0.346911,
+        "Senior Manager": 0.173116,
+        "VP": 0.02444
+      }
+    },
+    "MonthlyIncome": {
+      "kind": "bins",
+      "inner_edges": [
+        17594.4,
+        20298.0,
+        21045.0,
+        21548.2,
+        22458.0,
+        23458.2,
+        24674.2,
+        26251.4,
+        29361.4
+      ],
+      "shares": [
+        0.100475,
+        0.099796,
+        0.099117,
+        0.100475,
+        0.099796,
+        0.100475,
+        0.099796,
+        0.099796,
+        0.099796,
+        0.100475
+      ]
+    }
+  },
+  "model_features": [
+    "Age",
+    "TypeofContact",
+    "CityTier",
+    "Occupation",
+    "Gender",
+    "NumberOfPersonVisiting",
+    "PreferredPropertyStar",
+    "MaritalStatus",
+    "NumberOfTrips",
+    "Passport",
+    "OwnCar",
+    "NumberOfChildrenVisiting",
+    "Designation",
+    "MonthlyIncome"
+  ],
+  "train_data_sha256": "cc84f9ff694baf012a7790463fc8798c7c68f34b6b0c4672bc3a99b3a8bba470",
+  "code_sha256": "e403628ff85042641e531099be7b9faaa82a0f41e18328f23f9a5cec7cf00dcc",
+  "trained_at_utc": "2026-11-04T19:07:23+00:00"
+}

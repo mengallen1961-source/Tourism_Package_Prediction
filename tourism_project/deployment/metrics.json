@@ -1,0 +1,70 @@
+{
+  "live_model": {
+    "strategy": "pre_contact",
+    "feature_set": "C_pre_contact_no_redundant",
+    "features": [
+      "Age",
+      "TypeofContact",
+      "CityTier",
+      "Occupation",
+      "Gender",
+      "NumberOfPersonVisiting",
+      "PreferredPropertyStar",
+      "MaritalStatus",
+      "NumberOfTrips",
+      "Passport",
+      "OwnCar",
+      "NumberOfChildrenVisiting",
+      "Designation",
+      "MonthlyIncome"
+    ],
+    "algorithm": "RandomForest",
+    "best_params": {
+      "max_depth": 20,
+      "max_features": "sqrt",
+      "min_samples_leaf": 1
+    },
+    "threshold": 0.27,
+    "cv_best_pr_auc": 0.5899585467320889,
+    "oof_f1": 0.5897435897435898,
+    "test_metrics": {
+      "f1": 0.6060606060606061,
+      "precision": 0.5813953488372093,
+      "recall": 0.6329113924050633,
+      "accuracy": 0.8214285714285714,
+      "roc_auc": 0.8315567399511437,
+      "pr_auc": 0.6359026309331911,
+      "flagged": 86
+    },
+    "trained_at_utc": "2026-11-04T19:07:23+00:00",
+    "mlflow_run_id": "c2d704780ec142f88e98299b7e2c44c8",
+    "git_sha": "1de751184b8d6f5d9f8ce9767aba284238706b1d",
+    "train_data_sha256": "cc84f9ff694baf012a7790463fc8798c7c68f34b6b0c4672bc3a99b3a8bba470",
+    "test_data_sha256": "0cb33b34665bf444dd226b277de1bc8f9b6bd159584f7694b63ee18e7d5961fc",
+    "code_sha256": "e403628ff85042641e531099be7b9faaa82a0f41e18328f23f9a5cec7cf00dcc",
+    "n_train": 1473,
+    "n_test": 364,
+    "versions": {
+      "python": "3.11.17",
+      "scikit-learn": "1.6.0",
+      "xgboost": "2.1.4",
+      "pandas": "2.2.2"
+    }
+  },
+  "last_decision": "deployed: first model (no champion yet)",
+  "history": [
+    {
+      "time_utc": "2026-11-04T19:07:23+00:00",
+      "decision": "deployed: first model (no champion yet)",
+      "strategy": "pre_contact",
+      "feature_set": "C_pre_contact_no_redundant",
+      "test_pr_auc": 0.6359,
+      "test_f1": 0.6061,
+      "champion_test_pr_auc": null,
+      "champion_test_f1": null,
+      "n_train": 1473,
+      "n_test": 364,
+      "git_sha": "1de751184b8d6f5d9f8ce9767aba284238706b1d"
+    }
+  ]
+}
