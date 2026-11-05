@@ -4,7 +4,7 @@ End-to-end MLOps project: a model that predicts whether a customer will buy the 
 Package **before the first sales call**, trained, gated and deployed automatically by GitHub Actions
 and served with Streamlit Community Cloud.
 
-**Live app:** deployed in Section 11 of the notebook
+**Live app:** https://visitwithus-wellness.streamlit.app
 
 ## Repository structure
 ```
