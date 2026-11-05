@@ -3,6 +3,12 @@
 # --------------------------------------------------------------
 # Purpose : Define the end-to-end MLOps pipeline: register -> prepare ->
 #           drift check -> (conditional) train, gate and commit the model.
+#           Reproducibility: the runner image is pinned (ubuntu-24.04, not
+#           ubuntu-latest, which moves to a new OS release over time) and the
+#           official actions use their Node.js 24 major versions (checkout@v6,
+#           setup-python@v6, upload-artifact@v7, download-artifact@v8), so
+#           GitHub raises no deprecation warnings. Artifacts are always
+#           uploaded and downloaded by name.
 # Input   : None (GitHub reads this file from the repository root)
 # Output  : .github/workflows/pipeline.yml
 # ==============================================================
@@ -30,12 +36,12 @@ concurrency:
 
 jobs:
   register-dataset:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -45,19 +51,19 @@ jobs:
       - name: Register and validate the dataset
         run: python tourism_project/model_building/data_register.py
       - name: Upload the registration report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: registration-report
           path: artifacts/registration_report.json
 
   data-prep:
     needs: register-dataset
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -67,26 +73,26 @@ jobs:
       - name: Clean and split the data
         run: python tourism_project/model_building/prep.py
       - name: Upload the train and test splits
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: data-splits
           path: artifacts/data/
       - name: Upload the preparation report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: prep-report
           path: artifacts/prep_report.json
 
   drift-check:
     needs: data-prep
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       retrain: ${{ steps.drift.outputs.retrain }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -94,7 +100,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r tourism_project/requirements.txt
       - name: Download the train and test splits
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: data-splits
           path: artifacts/data
@@ -102,7 +108,7 @@ jobs:
         id: drift
         run: python tourism_project/model_building/drift_check.py ${{ github.event.inputs.force_retrain == 'true' && '--force' || '' }}
       - name: Upload the drift report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: drift-report
           path: artifacts/drift_report.json
@@ -110,14 +116,14 @@ jobs:
   model-training:
     needs: drift-check
     if: needs.drift-check.outputs.retrain == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -125,7 +131,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r tourism_project/requirements.txt
       - name: Download the train and test splits
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: data-splits
           path: artifacts/data
@@ -137,7 +143,7 @@ jobs:
         run: python tourism_project/model_building/train.py
       - name: Upload MLflow runs and the training report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mlflow-runs
           path: |
