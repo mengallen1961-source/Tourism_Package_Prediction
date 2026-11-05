@@ -224,19 +224,23 @@
     "Age",
     "TypeofContact",
     "CityTier",
+    "DurationOfPitch",
     "Occupation",
     "Gender",
     "NumberOfPersonVisiting",
+    "NumberOfFollowups",
+    "ProductPitched",
     "PreferredPropertyStar",
     "MaritalStatus",
     "NumberOfTrips",
     "Passport",
+    "PitchSatisfactionScore",
     "OwnCar",
     "NumberOfChildrenVisiting",
     "Designation",
     "MonthlyIncome"
   ],
   "train_data_sha256": "543b4bc8a00dc3fe8056217463558e50e9a0145dcb458c65810c59f7b551bb8b",
-  "code_sha256": "e403628ff85042641e531099be7b9faaa82a0f41e18328f23f9a5cec7cf00dcc",
-  "trained_at_utc": "2026-11-05T09:26:00+00:00"
+  "code_sha256": "7f5917001b643898ebcd49d981d77312fdba9494bc01bdd9ad3195406d3d7ade",
+  "trained_at_utc": "2026-11-05T09:39:49+00:00"
 }
