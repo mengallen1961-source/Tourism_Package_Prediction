@@ -1,22 +1,18 @@
 {
   "live_model": {
-    "strategy": "post_contact_follow_up",
-    "feature_set": "A_all_features",
+    "strategy": "pre_contact",
+    "feature_set": "C_pre_contact_no_redundant",
     "features": [
       "Age",
       "TypeofContact",
       "CityTier",
-      "DurationOfPitch",
       "Occupation",
       "Gender",
       "NumberOfPersonVisiting",
-      "NumberOfFollowups",
-      "ProductPitched",
       "PreferredPropertyStar",
       "MaritalStatus",
       "NumberOfTrips",
       "Passport",
-      "PitchSatisfactionScore",
       "OwnCar",
       "NumberOfChildrenVisiting",
       "Designation",
@@ -24,38 +20,38 @@
     ],
     "algorithm": "RandomForest",
     "best_params": {
-      "max_depth": null,
+      "max_depth": 20,
       "max_features": "sqrt",
       "min_samples_leaf": 1
     },
-    "threshold": 0.3,
-    "cv_best_pr_auc": 0.7151618228973222,
-    "oof_f1": 0.6821345707656613,
+    "threshold": 0.31,
+    "cv_best_pr_auc": 0.6205320837913668,
+    "oof_f1": 0.6102502979737783,
     "test_metrics": {
-      "f1": 0.7359307359307359,
-      "precision": 0.7391304347826086,
-      "recall": 0.7327586206896551,
-      "accuracy": 0.8803921568627451,
-      "roc_auc": 0.9159373359005776,
-      "pr_auc": 0.7930716607662391,
-      "flagged": 115
+      "f1": 0.6755555555555556,
+      "precision": 0.6972477064220184,
+      "recall": 0.6551724137931034,
+      "accuracy": 0.8568627450980392,
+      "roc_auc": 0.8704489760196046,
+      "pr_auc": 0.7111883619850361,
+      "flagged": 109
     },
-    "trained_at_utc": "2026-11-05T09:39:49+00:00",
-    "mlflow_run_id": "47bbd6b6af9848beb7ef6436fda55c64",
-    "git_sha": "3e363145bc1994362925201075216fca6f08e9ac",
+    "trained_at_utc": "2026-11-05T10:32:05+00:00",
+    "mlflow_run_id": "5c73425812514c209c6b6a02334e92a8",
+    "git_sha": "0af6228c1a8c3b4f31948dd986f080f8b473d763",
     "train_data_sha256": "543b4bc8a00dc3fe8056217463558e50e9a0145dcb458c65810c59f7b551bb8b",
     "test_data_sha256": "af6e0c472a0053eb1479f00bbaca8c27f1436c9fbb2ebe7f7b2dfd5db5afd6fd",
-    "code_sha256": "7f5917001b643898ebcd49d981d77312fdba9494bc01bdd9ad3195406d3d7ade",
+    "code_sha256": "e403628ff85042641e531099be7b9faaa82a0f41e18328f23f9a5cec7cf00dcc",
     "n_train": 2101,
     "n_test": 510,
     "versions": {
-      "python": "3.11.18",
+      "python": "3.11.17",
       "scikit-learn": "1.6.0",
       "xgboost": "2.1.4",
       "pandas": "2.2.2"
     }
   },
-  "last_decision": "deployed: strategy change pre_contact -> post_contact_follow_up (not comparable head-to-head; passes quality floor)",
+  "last_decision": "deployed: strategy change post_contact_follow_up -> pre_contact (not comparable head-to-head; passes quality floor)",
   "history": [
     {
       "time_utc": "2026-11-05T09:13:55+00:00",
@@ -95,6 +91,19 @@
       "n_train": 2101,
       "n_test": 510,
       "git_sha": "3e363145bc1994362925201075216fca6f08e9ac"
+    },
+    {
+      "time_utc": "2026-11-05T10:32:05+00:00",
+      "decision": "deployed: strategy change post_contact_follow_up -> pre_contact (not comparable head-to-head; passes quality floor)",
+      "strategy": "pre_contact",
+      "feature_set": "C_pre_contact_no_redundant",
+      "test_pr_auc": 0.7112,
+      "test_f1": 0.6756,
+      "champion_test_pr_auc": 0.7931,
+      "champion_test_f1": 0.7359,
+      "n_train": 2101,
+      "n_test": 510,
+      "git_sha": "0af6228c1a8c3b4f31948dd986f080f8b473d763"
     }
   ]
 }
